@@ -104,3 +104,4 @@ sudo systemctl enable grafana-server
 ![Image alt](https://github.com/Edo1993/otus_13/raw/master/139.png)
 
 Далее можно приступать к настройкам собственной борды, либо импортнуть уже готовую.
+https://grafana.com/grafana/dashboards
