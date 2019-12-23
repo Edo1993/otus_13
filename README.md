@@ -17,6 +17,7 @@
 
 На Google Cloud Platform создала вм для выполнения дз (Ubuntu 18.04 в самой нищей конфигурации - 300$ тянем как можем).Подрубаемся по ssh и погнали.
 
+*Node Exporter*
 Начнем с Node Exporter,чтобы сразу добавить его в Prometheus, как только до него дойдет очередь.
 ```
 sudo useradd --no-create-home --shell /bin/false node_exporter
@@ -40,7 +41,7 @@ sudo systemctl enable node_exporter
 curl 'localhost:9100/metrics'
 ```
 
-Prometheus
+*Prometheus*
 ```
 sudo useradd --no-create-home --shell /bin/false prometheus
 # Последняя версия:
@@ -78,3 +79,28 @@ sudo systemctl enable prometheus
 ```
 curl 'localhost:9090/metrics'
 ```
+
+*Grafana*
+
+```
+# Поледняя версия + инструкции по установке:
+# https://grafana.com/grafana/download
+sudo wget <.deb package url>
+sudo apt-get install -y adduser libfontconfig1
+sudo dpkg -i grafana_<version>_amd64.deb
+```
+Запустим Grafana:
+```
+sudo systemctl start grafana-server
+sudo systemctl status grafana-server
+sudo systemctl enable grafana-server
+```
+т.к вм на google cloud platform - то не забыть обязательные штуки:  на порт 3000 с логином и паролем 
+![Image alt](https://github.com/Edo1993/otus_13/raw/master/137.png)
+![Image alt](https://github.com/Edo1993/otus_13/raw/master/138.png)
+
+Открываем в браузере локально внешнюю ссылку по порту 3000 (попросит логин/пароль=admin).
+В качестве datasourse  выбрать prometheus
+![Image alt](https://github.com/Edo1993/otus_13/raw/master/139.png)
+
+Далее можно приступать к настройкам собственной борды, либо импортнуть уже готовую.
