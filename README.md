@@ -39,3 +39,42 @@ sudo systemctl enable node_exporter
 ```
 curl 'localhost:9100/metrics'
 ```
+
+Prometheus
+```
+sudo useradd --no-create-home --shell /bin/false prometheus
+# Последняя версия:
+# https://github.com/prometheus/prometheus/releases
+wget {скопипастченная ссылочка}
+tar -xvzf prometheus-{загруженная версия}.tar.gz
+sudo cp prometheus-{загруженная версия}/prometheus /usr/local/bin/
+sudo cp prometheus-{загруженная версия}/promtool /usr/local/bin/
+
+sudo mkdir /etc/prometheus
+sudo cp -r prometheus-{загруженная версия}/consoles/ /etc/prometheus/consoles
+sudo cp -r prometheus-{загруженная версия}/console_libraries/ /etc/prometheus/console_libraries
+sudo cp prometheus-{загруженная версия}/prometheus.yml /etc/prometheus/
+sudo chown -R prometheus:prometheus /etc/prometheus
+
+sudo mkdir /var/lib/prometheus
+sudo chown prometheus:prometheus /var/lib/prometheus
+```
+Добавить строки в /etc/prometheus/prometheus.yml, указывая, где Node Exporter:
+```
+  - job_name: 'node_localhost'
+    static_configs:
+    - targets: ['localhost:9100']
+```
+Создать [prometheus.service](https://github.com/Edo1993/otus_13/blob/master/prometheus.service) в /etc/systemd/system/
+
+Запустим Prometheus:
+```
+sudo systemctl daemon-reload
+sudo systemctl start prometheus
+sudo systemctl status prometheus
+sudo systemctl enable prometheus
+```
+Проверяем, что метрики отдаются промом:
+```
+curl 'localhost:9090/metrics'
+```
